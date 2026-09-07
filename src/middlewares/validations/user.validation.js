@@ -26,7 +26,7 @@ export const createUserValidation = [
         .isLength({ max: 100 })
         .withMessage("Email no debe superar los 100 caracteres")
         .custom(async (email) => {
-            const existingEmail = User.findOne({ where: {email}});
+            const existingEmail = await User.findOne({ where: {email}});
             if (existingEmail) {
                 throw new Error("Ese email ya está registrado")
             }
@@ -38,8 +38,13 @@ export const createUserValidation = [
         .isString()
         .withMessage("Password debe ser un string"),
     body("role")
-        .notEmpty()
-        .withMessage("role no puede estar vacío"),
+        .optional()
+        .custom(async (role) => {
+            if (role !== "admin" || role !== "user") {
+                throw new Error("El role debe ser entre 'user' o 'admin'")
+            }
+            return true;
+        })
 
 ];
 

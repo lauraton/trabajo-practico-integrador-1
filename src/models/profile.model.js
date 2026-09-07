@@ -27,8 +27,8 @@ export const Profile = sequelize.define("profile", {
         allowNull: true
 },
 
-birth_date: {
-type: DataType.DATE,
-allowNull: false
+    birth_date: {
+        type: DataTypes.DATE,
+        allowNull: false
 }
 })

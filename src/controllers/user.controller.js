@@ -1,5 +1,5 @@
-import { matchedData, validationResult } from "express-validator";
-import { User } from "../models/user.model.";
+import { matchedData } from "express-validator";
+import { User } from "../models/user.model.js";
 
 export const createUser = async (req, res) => {
     try {
