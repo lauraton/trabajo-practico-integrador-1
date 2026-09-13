@@ -14,18 +14,17 @@ export const createTag = async (req, res) => {
 
 export const updateTag = async (req, res) => {
 try {
-   
-    const { id } = req.params;
     const validatedData = matchedData(req);
+    const { id } = req.params;
+
     const tag = await Tag.findByPk(id)
 
     if (!tag) {
-        return res.status(404).json({message: "Ese tag no existe"});
-
-
+        return res.status(401).json({message: "No existe ese id"})
     }
 
     await tag.update(validatedData)
+    return res.status(201).json({message: "Tag actualizado correctamente"})
 } catch (error) {
     console.log(error)
     return res.status(500).json({message: "Error interno del servidor"})

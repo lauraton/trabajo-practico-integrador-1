@@ -10,7 +10,7 @@ export const createTagValidation = [
         .isLength({min: 2, max: 30})
         .withMessage("Name debe tener mínimo 2 caracteres, con un máximo de 30")
         .custom(async (name) => {
-            const existingTag = Tag.findOne({where: { name }})
+            const existingTag = await Tag.findOne({where: { name }})
 
             if (existingTag) {
                 throw new Error("Ya existe ese tag")
@@ -29,7 +29,7 @@ export const updateTagValidation = [
         .isLength({min: 2, max: 30})
         .withMessage("Name debe tener mínimo 2 caracteres, con un máximo de 30")
         .custom(async (name) => {
-            const existingTag = Tag.findOne({where: { name }})
+            const existingTag = await Tag.findOne({where: { name }})
 
             if (existingTag) {
                 throw new Error("Ya existe ese tag")
@@ -45,7 +45,7 @@ export const tagIdValidation = [
         .custom(async (id) => {
             const tag = await Tag.findByPk(id);
 
-            if (!user) {
+            if (!tag) {
                 throw new Error("El tag no existe");
             }
 

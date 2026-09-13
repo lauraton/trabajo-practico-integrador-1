@@ -3,7 +3,7 @@ import { createTagValidation, tagIdValidation, updateTagValidation } from "../mi
 import { validate } from "../middlewares/validator.js";
 import { createTag, updateTag } from "../controllers/tag.controller.js";
 
-export const tagRouter = Router()
+export const tagRoute = Router()
 
-tagRouter.post("/tags", createTagValidation, validate, createTag)
-tagRouter.put("/tags/:id", tagIdValidation, updateTagValidation, validate, updateTag)
+tagRoute.post("/tags", createTagValidation, validate, createTag)
+tagRoute.put("/tags/:id", tagIdValidation, updateTagValidation, validate, updateTag)

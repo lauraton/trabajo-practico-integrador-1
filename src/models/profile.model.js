@@ -20,15 +20,15 @@ export const Profile = sequelize.define("profile", {
     biography: {
         type: DataTypes.STRING(200),
         allowNull: true
-},
+    },
 
     avatar_url: {
         type: DataTypes.STRING(255),
         allowNull: true
-},
+    },
 
     birth_date: {
         type: DataTypes.DATE,
         allowNull: false
-}
+    }
 })
