@@ -7,7 +7,7 @@ export const Article = sequelize.define("article", {
         allowNull: false
     },
     content: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false},
     excerpt: {
         type: DataTypes.STRING(500),
@@ -15,15 +15,14 @@ export const Article = sequelize.define("article", {
     },
     status: {
         type: DataTypes.ENUM('published', 'archived'),
-        default: 'published',
+        defaultValue: 'published',
         allowNull: false
     },
     user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true
     }
 },
 {
-    timestaps: true
+    timestamps: true
 });
