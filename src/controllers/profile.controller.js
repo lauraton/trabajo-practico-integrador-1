@@ -29,5 +29,45 @@ export const updateProfile = async (req, res) => {
         console.log(error)
         return res.status(500).json({message: "Error interno del servidor"})
     }
+};
+
+export const deleteProfile = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleted = Profile.findByPk(id)
+        if (!deleted) {
+            return res.status(404).json({message: "Profile no encontrado"})
+        }
+        await deleted.destroy()
+        return res.status(200).json({message: "Profile eliminado con éxito."})
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: "Error interno del servidor"})
+    }
+    
+}
+
+export const getProfiles = async (req, res) => {
+    try {
+        const getAll = Profile.findAll()
+        return res.status(200).json(getAll)
+    } catch (error) {
+        return res.status(500).json({message: "Error interno del servidor"})
+    }
+    
+};
+
+export const getProfileById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const getById = Profile.findByPk(id)
+        if (!getById) {
+            return res.status(404).json({message: ""})
+        }
+        return res.status(200).json(getById)
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: "Error interno del servidor"})
+    }
 }
 
