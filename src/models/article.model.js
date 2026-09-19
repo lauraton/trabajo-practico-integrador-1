@@ -1,5 +1,6 @@
 import { sequelize } from "../config/database.js";
 import { DataTypes } from "sequelize";
+import { User } from "./user.model.js";
 
 export const Article = sequelize.define("article", {
     title:  {
@@ -26,3 +27,7 @@ export const Article = sequelize.define("article", {
 {
     timestamps: true
 });
+
+Article.belongsTo(User, {foreignKey: "user_id", as: "user"})
+
+User.hasMany(Article, {foreignKey: "user_id", as: "articles"})

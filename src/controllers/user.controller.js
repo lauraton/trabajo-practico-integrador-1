@@ -1,6 +1,5 @@
 import { matchedData } from "express-validator";
 import { User } from "../models/user.model.js";
-import e from "express";
 
 export const createUser = async (req, res) => {
     try {
