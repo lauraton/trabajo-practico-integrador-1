@@ -3,6 +3,7 @@ import { sequelize, startDB } from "./src/config/database.js";
 import { userRoute } from "./src/routes/user.route.js";
 import { tagRoute } from "./src/routes/tag.route.js";
 import { profileRoute } from "./src/routes/profile.route.js";
+import { articleRoute } from "./src/routes/article.route.js";
 
 const port = 6767;
 const app = express();
@@ -16,3 +17,4 @@ app.use(express.json());
 app.use("/api", userRoute);
 app.use("/api", tagRoute)
 app.use("/api", profileRoute)
+app.use("/api", articleRoute)
