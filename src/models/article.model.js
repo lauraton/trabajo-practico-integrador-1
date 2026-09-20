@@ -25,8 +25,7 @@ export const Article = sequelize.define("article", {
     }
 },
 {
-    timestamps: true,
-    paranoid: true
+    timestamps: true
 });
 
 Article.belongsTo(User, {foreignKey: "user_id", as: "author"})

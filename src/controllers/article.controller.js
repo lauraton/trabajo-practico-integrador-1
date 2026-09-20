@@ -4,9 +4,10 @@ import { Article } from "../models/article.model.js";
 export const createArticle = async (req, res) => {
     try {
         const validatedData = matchedData(req);
+        // Creamos una constante donde tomamos las tags de lo que envía el usuario. Al decir "tags", nos referimos al alias de la relación, encontrada en los modelos.
         const { tags } = req.body;
         const article = await Article.create(validatedData)
-
+        // Se establece una condición donde se verifica si tags existe, y se evalúa cuántos valores contiene (como array). Es decir, si tiene más de 0.
         if (tags && tags.length > 0) {
             await article.addTags(tags);
         }
