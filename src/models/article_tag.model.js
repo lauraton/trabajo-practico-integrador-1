@@ -11,10 +11,21 @@ export const ArticleTag = sequelize.define("Article_Tag",
             allowNull: false,
             autoIncrement: true,
             unique: true
+        },
+        article_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        tag_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
+    },
+    {
+        timestamps: true
     }
 );
 
-Article.belongsToMany(Tag, {through: ArticleTag, foreignKey: "article_id", as: "tags"})
+Article.belongsToMany(Tag, {through: ArticleTag, foreignKey: "article_id", as: "tags", onDelete: "CASCADE"})
 
 Tag.belongsToMany(Article, {through: ArticleTag, foreignKey: "tag_id", as: "articles"})

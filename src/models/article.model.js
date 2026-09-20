@@ -25,9 +25,10 @@ export const Article = sequelize.define("article", {
     }
 },
 {
-    timestamps: true
+    timestamps: true,
+    paranoid: true
 });
 
-Article.belongsTo(User, {foreignKey: "user_id", as: "user"})
+Article.belongsTo(User, {foreignKey: "user_id", as: "author"})
 
 User.hasMany(Article, {foreignKey: "user_id", as: "articles"})

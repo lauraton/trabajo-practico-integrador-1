@@ -4,7 +4,13 @@ import { Article } from "../models/article.model.js";
 export const createArticle = async (req, res) => {
     try {
         const validatedData = matchedData(req);
+        const { tags } = req.body;
         const article = await Article.create(validatedData)
+
+        if (tags && tags.length > 0) {
+            await article.addTags(tags);
+        }
+
         return res.status(201).json({message: "Article creado correctamente", article})
     
     } catch (error) {
