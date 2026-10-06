@@ -23,7 +23,7 @@ export const createArticle = async (req, res) => {
 export const updateArticle = async (req, res) => {
     try {
         const { id } = req.params;
-        const validatedData = matchedData(req);
+        const validatedData = matchedData(req, {locations: ["body"]});
         const article = await Article.findByPk(id)
 
         if (!article) {

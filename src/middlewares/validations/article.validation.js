@@ -26,6 +26,7 @@ export const articleCreateValidation = [
     body("status")
         .optional()
         .trim()
+        .toLowerCase()
         .isIn(["published", "archived"]).toLowerCase()
         .withMessage("status debe ser 'published' o 'archived'"),
 

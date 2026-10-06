@@ -5,9 +5,10 @@ export const Tag = sequelize.define("tag", {
     
     name: {
         type: DataTypes.STRING(30),
-        allowNull: false
+        allowNull: false,
+        unique: true
     }
 },
 
-{ timestaps: true } 
+{ timestamps: true } 
 )

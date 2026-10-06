@@ -1,18 +1,18 @@
 import { Sequelize } from "sequelize";
 
-export const sequelize = new Sequelize('tp1', 'root', '', {
-    "host": 'localhost',
-    "dialect": 'mysql',
+export const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+    "host": process.env.DB_HOST,
+    "dialect": process.env.DB_DIALECT,
     "logging": false
 })
 
 export const startDB = async () => {
     try {
         await sequelize.authenticate()
-        await sequelize.sync({ force: true })
+        await sequelize.sync({ force: false })
         console.log("La base de datos está lista.")
     } catch (error) {
-        console.log("La base de datos no pudo iniciarse.")
+        console.log("La base de datos no pudo iniciarse.", error)
     }
 }
 

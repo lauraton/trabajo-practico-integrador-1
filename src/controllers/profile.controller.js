@@ -15,7 +15,7 @@ export const createProfile = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        const validatedData = matchedData(req);
+        const validatedData = matchedData(req, {locations: ["body"]});
         const { id } = req.params;
 
         const profile = await Profile.findByPk(id)
@@ -34,7 +34,7 @@ export const updateProfile = async (req, res) => {
 export const deleteProfile = async (req, res) => {
     try {
         const { id } = req.params;
-        const deleted = Profile.findByPk(id)
+        const deleted = await Profile.findByPk(id)
         if (!deleted) {
             return res.status(404).json({message: "Profile no encontrado"})
         }
@@ -49,7 +49,7 @@ export const deleteProfile = async (req, res) => {
 
 export const getProfiles = async (req, res) => {
     try {
-        const getAll = Profile.findAll()
+        const getAll = await Profile.findAll()
         return res.status(200).json(getAll)
     } catch (error) {
         return res.status(500).json({message: "Error interno del servidor"})
@@ -60,7 +60,7 @@ export const getProfiles = async (req, res) => {
 export const getProfileById = async (req, res) => {
     try {
         const { id } = req.params;
-        const getById = Profile.findByPk(id)
+        const getById = await Profile.findByPk(id)
         if (!getById) {
             return res.status(404).json({message: ""})
         }

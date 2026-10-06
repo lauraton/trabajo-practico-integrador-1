@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createTagValidation, tagIdValidation, updateTagValidation } from "../middlewares/validations/tag.validation.js";
+import { createTagValidation, updateTagValidation } from "../middlewares/validations/tag.validation.js";
 import { validate } from "../middlewares/validator.js";
 import { createTag, deleteTag, getTags, getTagsById, updateTag } from "../controllers/tag.controller.js";
 

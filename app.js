@@ -6,7 +6,7 @@ import { profileRoute } from "./src/routes/profile.route.js";
 import { articleRoute } from "./src/routes/article.route.js";
 import { ArticleTag } from "./src/models/article_tag.model.js";
 
-const port = 6767;
+const port = process.env.PORT
 const app = express();
 
 app.listen(port, async () => {

@@ -51,7 +51,7 @@ export const deleteUser = async (req, res) => {
 
 export const getUsers = async (req, res) => {
     try {
-        const getAll = User.findAll()
+        const getAll = await User.findAll()
         return res.status(200).json(getAll)
     } catch (error) {
         console.log(error)
