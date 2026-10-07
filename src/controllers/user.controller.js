@@ -1,10 +1,22 @@
 import { matchedData } from "express-validator";
 import { User } from "../models/user.model.js";
 import { hashPassword } from "../helpers/bcrypt.helper.js";
+import { Profile } from "../models/profile.model.js";
+import { Article } from "../models/article.model.js";
 
 export const createUser = async (req, res) => {
   try {
-    const { username, email, password, role } = matchedData(req, {
+    const {
+      username,
+      email,
+      password,
+      role,
+      first_name,
+      last_name,
+      biography,
+      avatar_url,
+      birth_date,
+    } = matchedData(req, {
       locations: ["body"],
     });
     const hashedPassword = await hashPassword(password);
@@ -14,6 +26,14 @@ export const createUser = async (req, res) => {
       email,
       password: hashedPassword,
       role,
+    });
+    await Profile.create({
+      user_id: user.id,
+      first_name,
+      last_name,
+      biography,
+      avatar_url,
+      birth_date,
     });
     return res
       .status(201)
@@ -71,6 +91,12 @@ export const getUsers = async (req, res) => {
       attributes: {
         exclue: ["password"],
       },
+      include: [
+        {
+          model: Profile,
+          as: "profile",
+        },
+      ],
     });
     return res.status(200).json(getAll);
   } catch (error) {
@@ -84,6 +110,10 @@ export const getUserById = async (req, res) => {
     const { id } = matchedData(req, { locations: ["params"] });
     const getById = await User.findByPk(id, {
       attributes: { exclude: ["password"] },
+      include: [
+        { model: Profile, as: "profile" },
+        { model: Article, as: "articles" },
+      ],
     });
     if (!getById) {
       return res.status(404).json({ message: "User no encontrado" });

@@ -2,93 +2,140 @@ import { body } from "express-validator";
 import { User } from "../../models/user.model.js";
 
 export const articleCreateValidation = [
-    body("title")
-        .trim()
-        .notEmpty()
-        .withMessage("title no puede estar vacío")
-        .isString()
-        .withMessage("title debe ser un string")
-        .isLength({min: 3 , max: 200}),
+  body("title")
+    .trim()
+    .notEmpty()
+    .withMessage("title no puede estar vacío")
+    .isString()
+    .withMessage("title debe ser un string")
+    .isLength({ min: 3, max: 200 })
+    .withMessage("title debe tener entre 3 y 200 caracteres"),
 
-    body("content")
-        .notEmpty()
-        .withMessage("content no puede estar vacío")
-        .isString()
-        .withMessage("content debe ser un string")
-        .isLength({ min: 50}),
-    
-    body("excerpt")
-        .optional()
-        .isString()
-        .withMessage("excerpt debe ser un string")
-        .isLength({max: 500}),
+  body("content")
+    .notEmpty()
+    .withMessage("content no puede estar vacío")
+    .isString()
+    .withMessage("content debe ser un string")
+    .isLength({ min: 50 })
+    .withMessage("content debe tener 50 o más caracteres"),
 
-    body("status")
-        .optional()
-        .trim()
-        .toLowerCase()
-        .isIn(["published", "archived"]).toLowerCase()
-        .withMessage("status debe ser 'published' o 'archived'"),
+  body("excerpt")
+    .optional()
+    .isString()
+    .withMessage("excerpt debe ser un string")
+    .isLength({ max: 500 })
+    .withMessage("excerpt no puede superar los 500 caracteres"),
 
-    body("user_id")
-        .notEmpty()
-        .withMessage("user_id no puede estar vacío")
-        .isInt({min: 1})
-        .withMessage("user_id debe ser un número entero")
-        .custom(async (user_id) => {
-            const userid = await User.findByPk(user_id)
+  body("status")
+    .optional()
+    .trim()
+    .toLowerCase()
+    .isIn(["published", "archived"])
+    .toLowerCase()
+    .withMessage("status debe ser 'published' o 'archived'"),
 
-            if (!userid) {
-                throw new Error("Ese user_id no existe")
-            }
-            return true;
-        })
+  body("user_id")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("user_id debe ser un número entero")
+    .custom(async (user_id, { req }) => {
+      const userid = await UserModel.findByPk(user_id);
 
+      if (!userid) {
+        throw new Error("Ese user_id no existe");
+      }
+
+      const { idUser, role } = req.datosDelUsuarioLogeado;
+      if (role !== "admin" && Number(user_id) !== idUser) {
+        throw new Error("user_id debe coincidir con el usuario logueado");
+      }
+      return true;
+    }),
+  body("tags")
+    .optional()
+    .isArray()
+    .withMessage("tags debe ser un array con ids de etiquetas")
+    .custom(async (tags) => {
+      for (const id of tags) {
+        const tag = await TagModel.findByPk(id);
+        if (!tag) {
+          throw new Error(`La etiqueta con id ${id} no existe`);
+        }
+      }
+      return true;
+    }),
 ];
 
 export const articleUpdateValidation = [
-    body("title")
-        .optional()
-        .trim()
-        .notEmpty()
-        .withMessage("title no puede estar vacío")
-        .isString()
-        .withMessage("title debe ser un string")
-        .isLength({min: 3 , max: 200}),
+  body("title")
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage("title no puede estar vacío")
+    .isString()
+    .withMessage("title debe ser un string")
+    .isLength({ min: 3, max: 200 })
+    .withMessage("title debe tener entre 3 y 200 caracteres"),
 
-    body("content")
-        .optional()
-        .notEmpty()
-        .withMessage("content no puede estar vacío")
-        .isString()
-        .withMessage("content debe ser un string")
-        .isLength({ min: 50}),
-    
-    body("excerpt")
-        .optional()
-        .isString()
-        .withMessage("excerpt debe ser un string")
-        .isLength({max: 500}),
+  body("content")
+    .optional()
+    .notEmpty()
+    .withMessage("content no puede estar vacío")
+    .isString()
+    .withMessage("content debe ser un string")
+    .isLength({ min: 50 })
+    .withMessage("content debe tener al menos 50 caracteres"),
 
-    body("status")
-        .optional()
-        .trim()
-        .isIn(["published", "archived"]).toLowerCase()
-        .withMessage("status debe ser 'published' o 'archived'"),
+  body("excerpt")
+    .optional()
+    .isString()
+    .withMessage("excerpt debe ser un string")
+    .isLength({ max: 500 })
+    .withMessage("excerpt no puede superar los 500 caracteres"),
 
-    body("user_id")
-        .optional()
-        .notEmpty()
-        .withMessage("user_id no puede estar vacío")
-        .isInt({min: 1})
-        .withMessage("user_id debe ser un número entero")
-        .custom(async (user_id) => {
-            const userid = await User.findByPk(user_id)
+  body("status")
+    .optional()
+    .trim()
+    .toLowerCase()
+    .isIn(["published", "archived"])
+    .withMessage("status debe ser 'published' o 'archived'"),
 
-            if (!userid) {
-                throw new Error("Ese user_id no existe")
-            }
-            return true;
-        })
+  body("user_id")
+    .optional()
+    .notEmpty()
+    .withMessage("user_id no puede estar vacío")
+    .isInt({ min: 1 })
+    .withMessage("user_id debe ser un número entero")
+    .custom(async (user_id) => {
+      const userid = await User.findByPk(user_id);
 
+      if (!userid) {
+        throw new Error("Ese user_id no existe");
+      }
+      const { idUser, role } = req.datosDelUsuarioLogeado;
+      if (role !== "admin" && Number(user_id) !== idUser) {
+        throw new Error("user_id debe coincidir con el usuario logueado");
+      }
+      return true;
+    }),
+];
+
+export const articleIdValidation = [
+  param("id")
+    .isInt({ min: 1 })
+    .withMessage("El ID debe ser un entero positivo")
+    .custom(async (id) => {
+      const article = await ArticleModel.findByPk(id);
+
+      if (!article) {
+        throw new Error("El articulo no existe");
+      }
+
+      return true;
+    }),
+];
+export const articleUserIdValidation = [
+  param("id")
+    .isInt({ min: 1 })
+    .withMessage("El ID debe ser un entero positivo"),
 ];

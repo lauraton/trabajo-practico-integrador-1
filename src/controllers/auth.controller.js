@@ -118,7 +118,7 @@ export const updateProfile = async (req, res) => {
 
     const profileExist = await Profile.findOne({
       where: {
-        user_id: req.datosDelUsuarioLogeado.user_id,
+        user_id: req.datosDelUsuarioLogeado.idUser,
       },
     });
 
