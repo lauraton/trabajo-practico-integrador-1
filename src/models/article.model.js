@@ -22,6 +22,11 @@ export const Article = sequelize.define("article", {
     user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+            model: "Users",
+            key: "id"
+        },
+        onDelete: "CASCADE"
     }
 },
 {
@@ -30,4 +35,4 @@ export const Article = sequelize.define("article", {
 
 Article.belongsTo(User, {foreignKey: "user_id", as: "author"})
 
-User.hasMany(Article, {foreignKey: "user_id", as: "articles"})
+User.hasMany(Article, {foreignKey: "user_id", as: "articles", onDelete: "CASCADE"})
