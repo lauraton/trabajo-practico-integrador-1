@@ -48,6 +48,32 @@ export const createUserValidation = [
       }
       return true;
     }),
+  body("first_name")
+    .notEmpty()
+    .withMessage("first_name no puede estar vacío")
+    .isLength({ min: 2, max: 50 })
+    .withMessage("first_name debe tener entre 2 y 50 caracteres")
+    .isAlpha("es-ES", { ignore: " " })
+    .withMessage("first_name solo puede contener letras"),
+  body("last_name")
+    .notEmpty()
+    .withMessage("last_name no puede estar vacío")
+    .isLength({ min: 2, max: 50 })
+    .withMessage("last_name debe tener entre 2 y 50 caracteres")
+    .isAlpha("es-ES", { ignore: " " })
+    .withMessage("last_name solo puede contener letras"),
+  body("biography")
+    .optional()
+    .isLength({ max: 500 })
+    .withMessage("biography no puede superar los 500 caracteres"),
+  body("avatar_url")
+    .optional()
+    .isURL()
+    .withMessage("avatar_url debe ser una URL"),
+  body("birth_date")
+    .optional()
+    .isDate()
+    .withMessage("birth_date debe ser una fecha YYYY-MM-DD"),
 ];
 
 export const updateUserValidation = [
