@@ -9,6 +9,9 @@ export const createTagValidation = [
     .withMessage("Name debe de ser un string")
     .isLength({ min: 2, max: 30 })
     .withMessage("Name debe tener mínimo 2 caracteres, con un máximo de 30")
+    .not()
+    .contains(" ")
+    .withMessage("Name no puede contener espacios")
     .custom(async (name) => {
       const existingTag = await Tag.findOne({ where: { name } });
 
@@ -28,6 +31,9 @@ export const updateTagValidation = [
     .withMessage("Name debe de ser un string")
     .isLength({ min: 2, max: 30 })
     .withMessage("Name debe tener mínimo 2 caracteres, con un máximo de 30")
+    .not()
+    .contains(" ")
+    .withMessage("Name no puede contener espacios")
     .custom(async (name, { req }) => {
       const existingTag = await Tag.findOne({
         where: {

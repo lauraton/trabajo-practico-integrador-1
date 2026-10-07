@@ -5,15 +5,16 @@ export const createUserValidation = [
   body("username")
     .notEmpty()
     .withMessage("Username no puede estar vacío")
-    .isString()
-    .withMessage("El username debe ser un string")
     .isLength({ min: 3, max: 20 })
     .withMessage(
       "Username debe contener al menos 3 caracteres, con un máximo de 20",
     )
+    .isAlphanumeric()
+    .withMessage("Username solo puede contener letras y números")
     .custom(async (username) => {
       const existingUsername = await User.findOne({
         where: { username },
+        paranoid: false,
       });
       if (existingUsername) {
         throw new Error("El username ya está en uso.");
@@ -37,10 +38,21 @@ export const createUserValidation = [
   body("password")
     .notEmpty()
     .withMessage("Password no puede estar vacío")
-    .isString()
-    .withMessage("Password debe ser un string"),
+    .isStrongPassword({
+      minLength: 8,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 0,
+    })
+    .withMessage(
+      "Password debe tener minimo 8 caracteres, una mayuscula, una minuscula y un numero",
+    ),
+
   body("role")
     .optional()
+    .isIn(["user", "admin"])
+    .withMessage("El role debe ser 'user' o 'admin'")
     .custom(async (role) => {
       const lower = role.trim().toLowerCase();
       if (lower !== "admin" && lower !== "user") {
@@ -81,12 +93,12 @@ export const updateUserValidation = [
     .optional()
     .notEmpty()
     .withMessage("Username no puede estar vacío")
-    .isString()
-    .withMessage("El username debe ser un string")
     .isLength({ min: 3, max: 20 })
     .withMessage(
       "Username debe contener al menos 3 caracteres, con un máximo de 20",
     )
+    .isAlphanumeric()
+    .withMessage("Username solo puede contener letras y números")
     .custom(async (username, { req }) => {
       const existingUsername = await User.findOne({
         where: {
@@ -125,13 +137,13 @@ export const updateUserValidation = [
       return true;
     }),
 
-  body("password")
-    .optional()
-    .notEmpty()
-    .withMessage("Password no puede estar vacío")
-    .isString()
-    .withMessage("Password debe ser un string"),
-
+  body("password").optional().isStrongPassword({
+    minLength: 8,
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 0,
+  }),
   body("role")
     .optional()
     .custom(async (role) => {
