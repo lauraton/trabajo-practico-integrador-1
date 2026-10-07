@@ -10,6 +10,7 @@ import { articleRoute } from "./src/routes/article.route.js";
 import { ArticleTag } from "./src/models/article_tag.model.js";
 import { Profile } from "./src/models/profile.model.js";
 import { authRouter } from "./src/routes/auth.route.js";
+import { articleTagRouter } from "./src/routes/article_tag.route.js";
 const port = process.env.PORT;
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/api", userRoute);
 app.use("/api", tagRoute);
 app.use("/api", profileRoute);
 app.use("/api", articleRoute);
+app.use("/api", articleTagRouter);
 
 app.listen(port, async () => {
   await startDB();
