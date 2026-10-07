@@ -89,7 +89,7 @@ export const login = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   try {
-    const user = await UserModel.findByPk(req.datosDelUsuarioLogeado.idUser, {
+    const user = await User.findByPk(req.datosDelUsuarioLogeado.idUser, {
       attributes: {
         exclude: ["password"],
       },

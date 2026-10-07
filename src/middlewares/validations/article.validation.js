@@ -1,6 +1,5 @@
 import { body, param } from "express-validator";
 import { User } from "../../models/user.model.js";
-import { User } from "../../models/user.model.js";
 import { Tag } from "../../models/tag.model.js";
 import { Article } from "../../models/article.model.js";
 

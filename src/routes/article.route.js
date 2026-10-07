@@ -12,6 +12,7 @@ import {
   getArticles,
   getArticlesById,
   getArticleByUser,
+  getArticlesByUser,
   updateArticle,
 } from "../controllers/article.controller.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
@@ -49,7 +50,7 @@ articleRoute.get(
   authMiddleware,
   articleUserIdValidation,
   validate,
-  getArticlesByUser,
+  getArticleByUser,
 );
 articleRoute.get(
   "/articles/:id",
