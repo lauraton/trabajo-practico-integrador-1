@@ -5,7 +5,6 @@ import "dotenv/config";
 import { startDB } from "./src/config/database.js";
 import { userRoute } from "./src/routes/user.route.js";
 import { tagRoute } from "./src/routes/tag.route.js";
-import { profileRoute } from "./src/routes/profile.route.js";
 import { articleRoute } from "./src/routes/article.route.js";
 import { ArticleTag } from "./src/models/article_tag.model.js";
 import { Profile } from "./src/models/profile.model.js";
@@ -20,7 +19,6 @@ app.use(cookieParser());
 app.use("/api", authRouter);
 app.use("/api", userRoute);
 app.use("/api", tagRoute);
-app.use("/api", profileRoute);
 app.use("/api", articleRoute);
 app.use("/api", articleTagRouter);
 

@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createTagValidation,
   updateTagValidation,
+  tagIdValidation,
 } from "../middlewares/validations/tag.validation.js";
 import { validate } from "../middlewares/validator.js";
 import {
@@ -28,14 +29,17 @@ tagRoute.put(
   "/tags/:id",
   authMiddleware,
   adminMiddleware,
+  tagIdValidation,
   updateTagValidation,
   validate,
   updateTag,
 );
 tagRoute.delete(
   "/tags/:id",
+
   authMiddleware,
   adminMiddleware,
+  tagIdValidation,
   validate,
   deleteTag,
 );
@@ -44,6 +48,7 @@ tagRoute.get(
   "/tags/:id",
   authMiddleware,
   adminMiddleware,
+  tagIdValidation,
   validate,
   getTagsById,
 );

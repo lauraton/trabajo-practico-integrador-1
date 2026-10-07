@@ -3,7 +3,7 @@ import {
   createArticleTag,
   deleteArticleTag,
 } from "../controllers/article_tag.controller.js";
-import { validate } from "../middlewares/validate.js";
+import { validate } from "../middlewares/validator.js";
 import {
   articleTagIdValidation,
   createArticleTagValidation,

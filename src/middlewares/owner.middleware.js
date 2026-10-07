@@ -3,7 +3,7 @@ import { ArticleTag } from "../models/article_tag.model.js";
 
 export const ownerMiddleware = async (req, res, next) => {
   try {
-    const { user_id, role } = req.datosDelUsuarioLogeado;
+    const { idUser, role } = req.datosDelUsuarioLogeado;
 
     const articleExist = await Article.findByPk(req.params.id);
 
@@ -11,7 +11,7 @@ export const ownerMiddleware = async (req, res, next) => {
       return res.status(404).json({ message: "Articulo no encontrado" });
     }
 
-    if (articleExist.user_id !== user_id && role !== "admin") {
+    if (articleExist.user_id !== idUser && role !== "admin") {
       return res.status(403).json({
         message: "Solo el autor o un admin pueden modificar el articulo",
       });
@@ -26,7 +26,7 @@ export const ownerMiddleware = async (req, res, next) => {
 
 export const articleOwnerMiddleware = async (req, res, next) => {
   try {
-    const { user_id } = req.datosDelUsuarioLogeado;
+    const { idUser } = req.datosDelUsuarioLogeado;
 
     const articleExist = await Article.findByPk(req.body.article_id);
 
@@ -34,7 +34,7 @@ export const articleOwnerMiddleware = async (req, res, next) => {
       return res.status(404).json({ message: "Articulo no encontrado" });
     }
 
-    if (articleExist.user_id !== user_id) {
+    if (articleExist.user_id !== idUser) {
       return res.status(403).json({
         message: "Solo el autor puede agregar etiquetas a su articulo",
       });
@@ -49,7 +49,7 @@ export const articleOwnerMiddleware = async (req, res, next) => {
 
 export const articleTagOwnerMiddleware = async (req, res, next) => {
   try {
-    const { user_id } = req.datosDelUsuarioLogeado;
+    const { idUser } = req.datosDelUsuarioLogeado;
 
     const articleTagExist = await ArticleTag.findByPk(req.params.articleTagId, {
       include: [{ model: Article, as: "article" }],
@@ -59,7 +59,7 @@ export const articleTagOwnerMiddleware = async (req, res, next) => {
       return res.status(404).json({ message: "Relacion no encontrada" });
     }
 
-    if (articleTagExist.article.user_id !== user_id) {
+    if (articleTagExist.article.user_id !== idUser) {
       return res.status(403).json({
         message: "Solo el autor puede quitar etiquetas de su articulo",
       });

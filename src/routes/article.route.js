@@ -11,12 +11,11 @@ import {
   deleteArticle,
   getArticles,
   getArticlesById,
-  getArticlesByUser,
+  getArticleByUser,
   updateArticle,
 } from "../controllers/article.controller.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 import { ownerMiddleware } from "../middlewares/owner.middleware.js";
-
 export const articleRoute = Router();
 
 articleRoute.post(

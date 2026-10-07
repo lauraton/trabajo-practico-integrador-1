@@ -1,7 +1,7 @@
 import { matchedData } from "express-validator";
 import { User } from "../models/user.model.js";
 import { Profile } from "../models/profile.model.js";
-import { comparePassword, hashPassword } from "../helpers/bcript.helper.js";
+import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
 import { generateToken } from "../helpers/jwt.helper.js";
 
 export const register = async (req, res) => {
@@ -89,7 +89,7 @@ export const login = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   try {
-    const user = await UserModel.findByPk(req.datosDelUsuarioLogeado.user_id, {
+    const user = await UserModel.findByPk(req.datosDelUsuarioLogeado.idUser, {
       attributes: {
         exclude: ["password"],
       },

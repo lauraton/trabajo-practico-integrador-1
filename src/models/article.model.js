@@ -2,37 +2,45 @@ import { sequelize } from "../config/database.js";
 import { DataTypes } from "sequelize";
 import { User } from "./user.model.js";
 
-export const Article = sequelize.define("article", {
-    title:  {
-        type: DataTypes.STRING(200),
-        allowNull: false
+export const Article = sequelize.define(
+  "article",
+  {
+    title: {
+      type: DataTypes.STRING(200),
+      allowNull: false,
     },
     content: {
-        type: DataTypes.TEXT,
-        allowNull: false},
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     excerpt: {
-        type: DataTypes.STRING(500),
-        allowNull: true
+      type: DataTypes.STRING(500),
+      allowNull: true,
     },
     status: {
-        type: DataTypes.ENUM('published', 'archived'),
-        defaultValue: 'published',
-        allowNull: false
+      type: DataTypes.ENUM("published", "archived"),
+      defaultValue: "published",
+      allowNull: false,
     },
     user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: "Users",
-            key: "id"
-        },
-        onDelete: "CASCADE"
-    }
-},
-{
-    timestamps: true
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "users",
+        key: "id",
+      },
+      onDelete: "CASCADE",
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+Article.belongsTo(User, { foreignKey: "user_id", as: "author" });
+
+User.hasMany(Article, {
+  foreignKey: "user_id",
+  as: "articles",
+  onDelete: "CASCADE",
 });
-
-Article.belongsTo(User, {foreignKey: "user_id", as: "author"})
-
-User.hasMany(Article, {foreignKey: "user_id", as: "articles", onDelete: "CASCADE"})

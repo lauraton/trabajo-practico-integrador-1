@@ -10,7 +10,7 @@ export const createArticle = async (req, res) => {
     const { tags, ...articleData } = validatedData;
 
     if (!articleData.user_id) {
-      articleData.user_id = req.datosDelUsuarioLogeado.user_id;
+      articleData.idUser = req.datosDelUsuarioLogeado.user_id;
     }
     const article = await Article.create(articleData);
 

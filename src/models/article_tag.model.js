@@ -17,7 +17,7 @@ export const ArticleTag = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "Articles",
+        model: "articles",
         key: "id",
       },
       onDelete: "CASCADE",
@@ -26,7 +26,7 @@ export const ArticleTag = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "Tags",
+        model: "tags",
         key: "id",
       },
       onDelete: "CASCADE",
@@ -49,3 +49,4 @@ Tag.belongsToMany(Article, {
   foreignKey: "tag_id",
   as: "articles",
 });
+ArticleTag.belongsTo(Article, { foreignKey: "article_id", as: "article" });

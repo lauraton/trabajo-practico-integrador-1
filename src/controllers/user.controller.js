@@ -89,7 +89,7 @@ export const getUsers = async (req, res) => {
   try {
     const getAll = await User.findAll({
       attributes: {
-        exclue: ["password"],
+        exclude: ["password"],
       },
       include: [
         {

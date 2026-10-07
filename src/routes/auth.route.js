@@ -7,7 +7,7 @@ import {
   updateProfile,
 } from "../controllers/auth.controller.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
-import { validate } from "../middlewares/validate.js";
+import { validate } from "../middlewares/validator.js";
 import {
   loginValidation,
   registerValidation,

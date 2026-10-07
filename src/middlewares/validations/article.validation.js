@@ -1,5 +1,8 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import { User } from "../../models/user.model.js";
+import { User } from "../../models/user.model.js";
+import { Tag } from "../../models/tag.model.js";
+import { Article } from "../../models/article.model.js";
 
 export const articleCreateValidation = [
   body("title")
@@ -31,7 +34,6 @@ export const articleCreateValidation = [
     .trim()
     .toLowerCase()
     .isIn(["published", "archived"])
-    .toLowerCase()
     .withMessage("status debe ser 'published' o 'archived'"),
 
   body("user_id")
@@ -39,7 +41,7 @@ export const articleCreateValidation = [
     .isInt({ min: 1 })
     .withMessage("user_id debe ser un número entero")
     .custom(async (user_id, { req }) => {
-      const userid = await UserModel.findByPk(user_id);
+      const userid = await User.findByPk(user_id);
 
       if (!userid) {
         throw new Error("Ese user_id no existe");
@@ -57,7 +59,7 @@ export const articleCreateValidation = [
     .withMessage("tags debe ser un array con ids de etiquetas")
     .custom(async (tags) => {
       for (const id of tags) {
-        const tag = await TagModel.findByPk(id);
+        const tag = await Tag.findByPk(id);
         if (!tag) {
           throw new Error(`La etiqueta con id ${id} no existe`);
         }
@@ -106,7 +108,7 @@ export const articleUpdateValidation = [
     .withMessage("user_id no puede estar vacío")
     .isInt({ min: 1 })
     .withMessage("user_id debe ser un número entero")
-    .custom(async (user_id) => {
+    .custom(async (user_id, { req }) => {
       const userid = await User.findByPk(user_id);
 
       if (!userid) {
@@ -125,7 +127,7 @@ export const articleIdValidation = [
     .isInt({ min: 1 })
     .withMessage("El ID debe ser un entero positivo")
     .custom(async (id) => {
-      const article = await ArticleModel.findByPk(id);
+      const article = await Article.findByPk(id);
 
       if (!article) {
         throw new Error("El articulo no existe");

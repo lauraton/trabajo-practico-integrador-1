@@ -2,46 +2,53 @@ import { sequelize } from "../config/database.js";
 import { DataTypes } from "sequelize";
 import { User } from "./user.model.js";
 
-export const Profile = sequelize.define("profile", {
-  user_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: true,
-    references: {
-      model: "Users",
-      key: "id",
+export const Profile = sequelize.define(
+  "profile",
+  {
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+      references: {
+        model: "users",
+        key: "id",
+      },
+      onDelete: "CASCADE",
     },
-    onDelete: "CASCADE",
-  },
 
-  first_name: {
-    type: DataTypes.STRING(50),
-    allowNull: false,
-  },
+    first_name: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
 
-  last_name: {
-    type: DataTypes.STRING(50),
-    allowNull: false,
-  },
-  biography: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
+    last_name: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    biography: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
 
-  avatar_url: {
-    type: DataTypes.STRING(255),
-    allowNull: true,
-  },
+    avatar_url: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
 
-  birth_date: {
-    type: DataTypes.DATE,
-    allowNull: false,
+    birth_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+    },
   },
-},
-{
-    timestamps: true
-});
+  {
+    timestamps: true,
+  },
+);
 
 Profile.belongsTo(User, { foreignKey: "user_id", as: "user" });
 
-User.hasOne(Profile, { foreignKey: "user_id", as: "profile", onDelete: "CASCADE" });
+User.hasOne(Profile, {
+  foreignKey: "user_id",
+  as: "profile",
+  onDelete: "CASCADE",
+});
